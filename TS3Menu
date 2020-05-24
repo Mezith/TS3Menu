@@ -103,29 +103,30 @@ done
 }
 
 checkK () {
-if [ "$backupfolder" = "EMPTY" ] && [ -z $backupfolder2 ] ; then	
+if [ "$backupfolder" = 'EMPTY' ] && [ -z $backupfolder2 ] ; then
 until [[ $cHoice2 =~ ^\/ ]]
 do
         clear
-	menUcheckBF
+        menUcheckBF
         read cHoice2
 done
-fi
+
 backupfolder2=$cHoice2
 sed -i '13s|EMPTY|'$cHoice2'|' "${BASH_SOURCE[0]}"
 unset cHoice2
-if [ "$serverfolder" = "EMPTY" ] && [ -z $serverfolder2 ] ; then
+fi
+if [ "$serverfolder" = 'EMPTY' ] && [ -z $serverfolder2 ] ; then
 until [[ $cHoice3 =~ ^\/ ]]
 do
         clear
         menUcheckSF
         read cHoice3
 done
+serverfolder2=$cHoice3
+sed -i '14s|EMPTY|'$cHoice3'|' "${BASH_SOURCE[0]}"
+unset cHoice3
 clear
 fi
-serverfolder2=$cHoice3
-sed -i '14s|EMPTY|'$cHoice3'|' "${BASH_SOURCE[0]}" 
-unset cHoice3
 clear
 }
 
