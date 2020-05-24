@@ -1,0 +1,391 @@
+#!/bin/bash
+
+topL="╔"
+topR="╗"
+botL="╚"
+botR="╝"
+siDe="║"
+brakeL="╠"
+brakeR="╣"
+breakL="╟"
+breakR="╢"
+
+backupfolder='EMPTY'
+serverfolder='EMPTY'
+
+dash () {
+i=0
+until [ $i -eq $1 ]; do
+dasH+="═"
+let i++
+done
+echo "$dasH"
+unset dasH
+}
+
+dash2 () {
+i=0
+until [ $i -eq $1 ]; do
+dasH+="─"
+let i++
+done
+echo "$dasH"
+unset dasH
+}
+
+space () {
+i=0
+until [ $i -eq $1 ]; do
+spaCe+=" "
+let i++
+done
+echo "$spaCe"
+unset spaCe
+}
+
+toP () {	
+toPsec=$topL$(dash 60)$topR
+echo "$toPsec"
+}
+
+botTom () {	
+boTsec=$botL$(dash 60)$botR
+echo "$boTsec"
+}
+
+midSection () {	
+i=0
+until [ $i -eq $1 ]; do
+midSec=$siDe$(space 60)$siDe
+echo "$midSec"
+let i++
+done
+}
+
+midSectionWrite () {
+d=$1
+c=${#d}
+b=$((60-$c))
+a=$(($b/2))
+if (( $b % 2 )) ; then
+	a2=$((a+1))
+	midSecW=$siDe$(space $a)$1$(space $a2)$siDe
+else
+        midSecW=$siDe$(space $a)$1$(space $a)$siDe
+fi
+echo "$midSecW"
+}
+
+optionS () {
+d2=$1
+c2=${#d2}
+b2=$((55-$c2))
+midSecW2=$siDe$(space 5)$1$(space $b2)$siDe
+echo "$midSecW2"
+}
+
+midbraKe () {
+i=0
+until [ $i -eq $1 ]; do
+midBrake=$brakeL$(dash 60)$brakeR
+echo "$midBrake"
+let i++
+done
+}
+
+midbreaK () {
+i=0
+until [ $i -eq $1 ]; do
+midBrake2=$breakL$(dash2 60)$breakR
+echo "$midBrake2"
+let i++
+done
+}
+
+checkK () {
+if [ "$backupfolder" = "EMPTY" ] ; then	
+until [[ $cHoice2 =~ ^\/ ]]
+do
+        clear
+	menUcheckBF
+        read cHoice2
+done
+fi
+backupfolder2=$cHoice2
+sed -i '13s|EMPTY|'$cHoice2'|' "${BASH_SOURCE[0]}"
+unset cHoice2
+if [ "$serverfolder" = "EMPTY" ] ; then
+until [[ $cHoice3 =~ ^\/ ]]
+do
+        clear
+        menUcheckSF
+        read cHoice3
+done
+clear
+fi
+serverfolder2=$cHoice3
+sed -i '14s|EMPTY|'$cHoice3'|' "${BASH_SOURCE[0]}" 
+unset cHoice3
+clear
+}
+
+menU () {
+toP
+midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
+midbraKe 1
+midSectionWrite 'Choose an Option 1,2,3,or 4'
+midSectionWrite 'This Scipt will Auto Backup!'
+if [ $serverfolder = 'EMPTY' ] ; then
+midSectionWrite 'Server Directory '$serverfolder2''
+else
+midSectionWrite 'Server Directory '$serverfolder''
+fi
+if [ $backupfolder = 'EMPTY' ] ; then
+midSectionWrite 'Backup Directory '$backupfolder2''
+else
+midSectionWrite 'Backup Directory '$backupfolder''
+fi
+midbreaK 1
+midSection 1
+optionS "1. Install or Update TeamSpeak3"
+optionS "2. Restore to Previous Version"
+optionS "3. Change Backup & Restore Directory"
+optionS "4. Exit"
+midSection 1
+botTom
+}
+
+menUselect () {
+toP
+midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
+midbraKe 1
+midSectionWrite 'Choose an Option 1 or 2'
+midSectionWrite 'This Scipt will Auto Backup!'
+if [ $serverfolder = 'EMPTY' ] ; then
+midSectionWrite 'Server Directory '$serverfolder2''
+else
+midSectionWrite 'Server Directory '$serverfolder''
+fi
+if [ $backupfolder = 'EMPTY' ] ; then
+midSectionWrite 'Backup Directory '$backupfolder2''
+else
+midSectionWrite 'Backup Directory '$backupfolder''
+fi
+midbreaK 1
+midSection 1
+optionS 'Please select a File-Type!'
+optionS "1. 64-bit version"
+optionS "2. x86 version"
+midSection 1
+botTom
+}
+
+Ysure () {
+toP
+midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
+midbraKe 1
+midSectionWrite 'Choose an Option 1 or 2'
+midSectionWrite 'This Scipt will Auto Backup!'
+if [ $serverfolder = 'EMPTY' ] ; then
+midSectionWrite 'Server Directory '$serverfolder2''
+else
+midSectionWrite 'Server Directory '$serverfolder''
+fi
+if [ $backupfolder = 'EMPTY' ] ; then
+midSectionWrite 'Backup Directory '$backupfolder2''
+else
+midSectionWrite 'Backup Directory '$backupfolder''
+fi
+midbreaK 1
+midSection 1
+optionS 'Are you sure you want to **RESTORE**!?'
+optionS "1. Yes"
+optionS "2. No"
+midSection 1
+botTom
+}
+
+menUerror () {
+toP
+midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
+midbreaK 1
+midSectionWrite "**Choose an Option 1,2,3,or 4**"
+midSectionWrite "****Please choose an option****"
+botTom
+}
+
+menUcheckBF () {
+toP
+midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
+midbreaK 1
+midSectionWrite "**Absolute Path only**"
+midSectionWrite "**Please enter the Backup Directory**"
+midSectionWrite "**Current Directory $backupfolder**"
+botTom
+}
+
+menUcheckSF () {
+toP
+midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
+midbreaK 1
+midSectionWrite "**Absolute Path only**"
+midSectionWrite "**Please enter the Server Directory**"
+midSectionWrite "**Current Directory $serverfolder**"
+botTom
+}
+
+update () {
+SID=$(ps aux | grep -v 'grep' | grep ts3server | awk '{ print $2 }')
+if [ "$SID" ] ;then
+        $serverfolder/ts3server_startscript.sh stop
+fi
+cp $serverfolder -R $backupfolder
+cp $backupfolder/$TS3file/* -R $serverfolder/
+$serverfolder/ts3server_startscript.sh start
+}
+
+instaLL () {
+if [ $backupfolder = 'EMPTY' ] ; then
+backupfolder=$backupfolder2
+fi
+if [ $serverfolder = 'EMPTY' ] ; then
+serverfolder=$serverfolder2
+fi
+menUselect
+read cHoice4
+until [[ $cHoice4 =~ ^[+]?[1-2]{1}+$ ]]
+do
+	clear
+	menUerror
+	sleep 3
+	clear
+	menUselect
+	read cHoice4
+done
+if [ $cHoice4 = '1' ] ; then
+v='amd64'	
+elif [ $cHoice4 = '2' ] ; then
+v='x86'
+fi
+TS3file="teamspeak3-server_linux_$v"
+clear
+s1=$(cat $serverfolder/CHANGELOG | grep 'Server Release' | head -n 1 | awk '{ print $4 }')
+wget https://www.teamspeak.com/en/downloads/#server -O $backupfolder/srv.txt
+x1=$(grep $TS3file $backupfolder/srv.txt | grep 'value=' | sed 's/^.*\(https.*bz2\).*$/\1/')
+ 
+cd $backupfolder && wget $x1
+x2=$(echo $x1 | sed "s/^.*\($TS3file.*bz2\).*$/\1/")
+tar xfj $x2
+s2=$(cat $backupfolder/$TS3file/CHANGELOG | grep 'Server Release' | head -n 1 | awk '{ print $4}')
+num1=$(echo $s1 | sed -e 's/\.//g')
+num2=$(echo $s2 | sed -e 's/\.//g')
+if [ "$num1" -ge "$num2" ];then
+        echo "Already the Newest-Version" $s1"!"
+        sleep 3
+	rm $backupfolder/srv.txt
+	rm $backupfolder/$x2
+	rm -r $backupfolder/$TS3file
+	clear
+	unset cHoice4
+	Main
+else
+        update
+        echo "TeamSpeak has been Backed up & Updated to Version" $s2"!"
+        sleep 3
+	rm $backupfolder/srv.txt
+	rm $backupfolder/$x2
+	rm -r $backupfolder/$TS3file
+	clear
+	unset cHoice4
+	Main
+fi
+}
+
+resToRe () {
+until [[ $cHoiceG =~ ^[+]?[1-2]{1}+$ ]]
+do
+        clear
+        Ysure
+        read cHoiceG
+done
+if [ $cHoiceG = '1' ] ; then
+if [ $backupfolder = 'EMPTY' ] ; then
+	backupfolder=$backupfolder2
+fi
+if [ $serverfolder = 'EMPTY' ] ; then
+	serverfolder=$serverfolder2
+fi
+	SID=$(ps aux | grep -v 'grep' | grep ts3server | awk '{ print $2 }')
+if [ "$SID" ] ;then
+        $serverfolder/ts3server_startscript.sh stop
+fi
+	fldrname=$(echo $serverfolder | sed 's:/.*/::')
+	clear
+	cp $backupfolder/$fldrname/* -R $serverfolder/
+	s1=$(cat $serverfolder/CHANGELOG | grep 'Server Release' | head -n 1 | awk '{ print $4 }')
+	echo "Server has been Restored to version $s1!"
+        sleep 3
+	clear
+	unset cHoiceG
+	Main
+fi
+if [ $cHoiceG = '2' ] ; then
+	clear
+	unset cHoiceG
+	Main
+fi
+}
+
+backUP () {
+until [[ $cHoiceB =~ ^\/ ]]
+do
+        clear
+        menUcheckBF
+        read cHoiceB
+done
+sed -i '13s|'$backupfolder'|'$cHoiceB'|' "${BASH_SOURCE[0]}"
+backupfolder=$cHoiceB
+unset cHoiceB
+until [[ $cHoiceC =~ ^\/ ]]
+do
+        clear
+        menUcheckSF
+        read cHoiceC
+done
+sed -i '14s|'$serverfolder'|'$cHoiceC'|' "${BASH_SOURCE[0]}"
+serverfolder=$cHoiceC
+clear
+unset cHoiceC
+Main
+}
+
+Main () {
+checkK
+menU
+read cHoice
+until [[ $cHoice =~ ^[+]?[1-4]{1}+$ ]]
+do
+	clear
+	menUerror
+	sleep 3
+	clear
+	menU
+	read cHoice
+done
+clear
+if [ $cHoice = '1' ] ; then
+	unset cHoice
+	instaLL
+elif [ $cHoice = '2' ] ; then
+	unset cHoice
+	resToRe
+elif [ $cHoice = '3' ] ; then
+	unset cHoice
+	backUP
+elif [ $cHoice = '4' ] ; then
+	clear
+	exit
+fi
+}
+
+Main
