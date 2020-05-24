@@ -103,7 +103,7 @@ done
 }
 
 checkK () {
-if [ "$backupfolder" = "EMPTY" ] ; then	
+if [ "$backupfolder" = "EMPTY" ] && [ -z $backupfolder2 ] ; then	
 until [[ $cHoice2 =~ ^\/ ]]
 do
         clear
@@ -114,7 +114,7 @@ fi
 backupfolder2=$cHoice2
 sed -i '13s|EMPTY|'$cHoice2'|' "${BASH_SOURCE[0]}"
 unset cHoice2
-if [ "$serverfolder" = "EMPTY" ] ; then
+if [ "$serverfolder" = "EMPTY" ] && [ -z $serverfolder2 ] ; then
 until [[ $cHoice3 =~ ^\/ ]]
 do
         clear
