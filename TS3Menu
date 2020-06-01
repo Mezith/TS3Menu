@@ -280,25 +280,37 @@ tar xfj $x2
 s2=$(cat $backupfolder/$TS3file/CHANGELOG | grep 'Server Release' | head -n 1 | awk '{ print $4}')
 num1=$(echo $s1 | sed -e 's/\.//g')
 num2=$(echo $s2 | sed -e 's/\.//g')
-if [ "$num1" -ge "$num2" ];then
+s3=$(cat $serverfolder/CHANGELOG | grep "Server Release $s1" | wc -l)
+s4=$(cat $backupfolder/$TS3file/CHANGELOG | grep "Server Release $s2" | wc -l)
+if [ "$num1" -eq "$num2" ] && [ "$s4" -gt "$s3" ] ; then
+        update
+        echo "TeamSpeak has been Backed up & Updated to Version" $s2" Update" $s4"!"
+        sleep 5
+        rm $backupfolder/srv.txt
+        rm $backupfolder/$x2
+        rm -r $backupfolder/$TS3file
+        clear
+        unset cHoice4
+        Main
+elif [ "$num1" -ge "$num2" ];then
         echo "Already the Newest-Version" $s1"!"
-        sleep 3
-	rm $backupfolder/srv.txt
-	rm $backupfolder/$x2
-	rm -r $backupfolder/$TS3file
-	clear
-	unset cHoice4
-	Main
+        sleep 5
+        rm $backupfolder/srv.txt
+        rm $backupfolder/$x2
+        rm -r $backupfolder/$TS3file
+        clear
+        unset cHoice4
+        Main
 else
         update
         echo "TeamSpeak has been Backed up & Updated to Version" $s2"!"
-        sleep 3
-	rm $backupfolder/srv.txt
-	rm $backupfolder/$x2
-	rm -r $backupfolder/$TS3file
-	clear
-	unset cHoice4
-	Main
+        sleep 5
+        rm $backupfolder/srv.txt
+        rm $backupfolder/$x2
+        rm -r $backupfolder/$TS3file
+        clear
+        unset cHoice4
+        Main
 fi
 }
 
