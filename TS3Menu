@@ -284,8 +284,9 @@ s3=$(cat $serverfolder/CHANGELOG | grep "Server Release $s1" | wc -l)
 s4=$(cat $backupfolder/$TS3file/CHANGELOG | grep "Server Release $s2" | wc -l)
 if [ "$num1" -eq "$num2" ] && [ "$s4" -gt "$s3" ] ; then
         update
-        echo "TeamSpeak has been Backed up & Updated to Version" $s2" Update" $s4"!"
-        sleep 5
+        echo "******** TeamSpeak has been Backed up & Updated to Version" $s2" Update" $s4"! ********"
+        echo ""
+        read -rsp $'Press any key to continue...\n' -n1 key
         rm $backupfolder/srv.txt
         rm $backupfolder/$x2
         rm -r $backupfolder/$TS3file
@@ -293,8 +294,9 @@ if [ "$num1" -eq "$num2" ] && [ "$s4" -gt "$s3" ] ; then
         unset cHoice4
         Main
 elif [ "$num1" -ge "$num2" ];then
-        echo "Already the Newest-Version" $s1"!"
-        sleep 5
+        echo "******** Already the Newest-Version" $s1"! ********"
+        echo ""
+        read -rsp $'Press any key to continue...\n' -n1 key
         rm $backupfolder/srv.txt
         rm $backupfolder/$x2
         rm -r $backupfolder/$TS3file
@@ -303,8 +305,9 @@ elif [ "$num1" -ge "$num2" ];then
         Main
 else
         update
-        echo "TeamSpeak has been Backed up & Updated to Version" $s2"!"
-        sleep 5
+        echo "******** TeamSpeak has been Backed up & Updated to Version" $s2"! ********"
+        echo ""
+        read -rsp $'Press any key to continue...\n' -n1 key
         rm $backupfolder/srv.txt
         rm $backupfolder/$x2
         rm -r $backupfolder/$TS3file
