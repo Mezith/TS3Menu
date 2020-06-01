@@ -339,8 +339,9 @@ fi
 	clear
 	cp $backupfolder/$fldrname/* -R $serverfolder/
 	s1=$(cat $serverfolder/CHANGELOG | grep 'Server Release' | head -n 1 | awk '{ print $4 }')
-	echo "Server has been Restored to version $s1!"
-        sleep 3
+	echo "******** Server has been Restored to version $s1! ********"
+        echo ""
+	read -rsp $'Press any key to continue...\n' -n1 key
 	clear
 	unset cHoiceG
 	Main
