@@ -15,7 +15,7 @@ serverfolder='EMPTY'
 
 dash () {
 i=0
-until [ $i -eq $1 ]; do
+until [[ $i -eq $1 ]] ; do
 dasH+="═"
 let i++
 done
@@ -25,7 +25,7 @@ unset dasH
 
 dash2 () {
 i=0
-until [ $i -eq $1 ]; do
+until [[ $i -eq $1 ]] ; do
 dasH+="─"
 let i++
 done
@@ -35,7 +35,7 @@ unset dasH
 
 space () {
 i=0
-until [ $i -eq $1 ]; do
+until [[ $i -eq $1 ]] ; do
 spaCe+=" "
 let i++
 done
@@ -43,20 +43,20 @@ echo "$spaCe"
 unset spaCe
 }
 
-toP () {	
-toPsec=$topL$(dash 60)$topR
+toP () {
+toPsec=$topL$(dash $size)$topR
 echo "$toPsec"
 }
 
-botTom () {	
-boTsec=$botL$(dash 60)$botR
+botTom () {
+boTsec=$botL$(dash $size)$botR
 echo "$boTsec"
 }
 
-midSection () {	
+midSection () {
 i=0
-until [ $i -eq $1 ]; do
-midSec=$siDe$(space 60)$siDe
+until [[ $i -eq $1 ]] ; do
+midSec=$siDe$(space $size)$siDe
 echo "$midSec"
 let i++
 done
@@ -65,11 +65,11 @@ done
 midSectionWrite () {
 d=$1
 c=${#d}
-b=$((60-$c))
+b=$(($size-$c))
 a=$(($b/2))
 if (( $b % 2 )) ; then
-	a2=$((a+1))
-	midSecW=$siDe$(space $a)$1$(space $a2)$siDe
+        a2=$((a+1))
+        midSecW=$siDe$(space $a)$1$(space $a2)$siDe
 else
         midSecW=$siDe$(space $a)$1$(space $a)$siDe
 fi
@@ -79,15 +79,16 @@ echo "$midSecW"
 optionS () {
 d2=$1
 c2=${#d2}
-b2=$((55-$c2))
+cD=$(($size-5))
+b2=$(($cD-$c2))
 midSecW2=$siDe$(space 5)$1$(space $b2)$siDe
 echo "$midSecW2"
 }
 
 midbraKe () {
 i=0
-until [ $i -eq $1 ]; do
-midBrake=$brakeL$(dash 60)$brakeR
+until [[ $i -eq $1 ]] ; do
+midBrake=$brakeL$(dash $size)$brakeR
 echo "$midBrake"
 let i++
 done
@@ -95,39 +96,11 @@ done
 
 midbreaK () {
 i=0
-until [ $i -eq $1 ]; do
-midBrake2=$breakL$(dash2 60)$breakR
+until [[ $i -eq $1 ]] ; do
+midBrake2=$breakL$(dash2 $size)$breakR
 echo "$midBrake2"
 let i++
 done
-}
-
-checkK () {
-if [ "$backupfolder" = 'EMPTY' ] && [ -z $backupfolder2 ] ; then
-until [[ $cHoice2 =~ ^\/ ]]
-do
-        clear
-        menUcheckBF
-        read cHoice2
-done
-
-backupfolder2=$cHoice2
-sed -i '13s|EMPTY|'$cHoice2'|' "${BASH_SOURCE[0]}"
-unset cHoice2
-fi
-if [ "$serverfolder" = 'EMPTY' ] && [ -z $serverfolder2 ] ; then
-until [[ $cHoice3 =~ ^\/ ]]
-do
-        clear
-        menUcheckSF
-        read cHoice3
-done
-serverfolder2=$cHoice3
-sed -i '14s|EMPTY|'$cHoice3'|' "${BASH_SOURCE[0]}"
-unset cHoice3
-clear
-fi
-clear
 }
 
 menU () {
@@ -235,6 +208,61 @@ midSectionWrite "**Current Directory $serverfolder**"
 botTom
 }
 
+chcKsZ () {
+sF=${#serverfolder}
+sF2=${#serverfolder2}
+bF=${#backupfolder}
+bF2=${#backupfolder2}
+if [[ $sF -gt 43 ]] ; then
+        cN=$(($sF+24))
+        unset size
+        size=$cN
+elif [[ $sF2 -gt 43 ]] ; then
+        cN=$(($sF2+24))
+        unset size
+        size=$cN
+elif [[ $bF -gt 43 ]] ; then
+        cN=$(($bF+24))
+        unset size
+        size=$cN
+elif [[ $bF2 -gt 43 ]] ; then
+        cN=$(($bF2+24))
+        unset size
+        size=$cN
+else
+        unset size
+        size=60
+fi
+}
+
+checkK () {
+if [ "$backupfolder" = 'EMPTY' ] && [ -z $backupfolder2 ] ; then
+until [[ $cHoice2 =~ ^\/ ]]
+do
+        clear
+        menUcheckBF
+        read cHoice2
+done
+
+backupfolder2=$cHoice2
+sed -i '13s|EMPTY|'$cHoice2'|' "${BASH_SOURCE[0]}"
+unset cHoice2
+fi
+if [ "$serverfolder" = 'EMPTY' ] && [ -z $serverfolder2 ] ; then
+until [[ $cHoice3 =~ ^\/ ]]
+do
+        clear
+        menUcheckSF
+        read cHoice3
+done
+serverfolder2=$cHoice3
+sed -i '14s|EMPTY|'$cHoice3'|' "${BASH_SOURCE[0]}"
+unset cHoice3
+clear
+fi
+clear
+}
+
 update () {
 SID=$(ps aux | grep -v 'grep' | grep ts3server | awk '{ print $2 }')
 if [ "$SID" ] ;then
@@ -256,15 +284,15 @@ menUselect
 read cHoice4
 until [[ $cHoice4 =~ ^[+]?[1-2]{1}+$ ]]
 do
-	clear
-	menUerror
-	sleep 3
-	clear
-	menUselect
-	read cHoice4
+        clear
+        menUerror
+        sleep 3
+        clear
+        menUselect
+        read cHoice4
 done
 if [ $cHoice4 = '1' ] ; then
-v='amd64'	
+v='amd64'
 elif [ $cHoice4 = '2' ] ; then
 v='x86'
 fi
@@ -273,7 +301,7 @@ clear
 s1=$(cat $serverfolder/CHANGELOG | grep 'Server Release' | head -n 1 | awk '{ print $4 }')
 wget https://www.teamspeak.com/en/downloads/#server -O $backupfolder/srv.txt
 x1=$(grep $TS3file $backupfolder/srv.txt | grep 'value=' | sed 's/^.*\(https.*bz2\).*$/\1/')
- 
+
 cd $backupfolder && wget $x1
 x2=$(echo $x1 | sed "s/^.*\($TS3file.*bz2\).*$/\1/")
 tar xfj $x2
@@ -292,9 +320,9 @@ if [ "$num1" -eq "$num2" ] && [ "$s4" -gt "$s3" ] ; then
         rm -r $backupfolder/$TS3file
         clear
         unset cHoice4
-        Main
+	 Main
 elif [ "$num1" -ge "$num2" ];then
-        echo "******** Already the Newest-Version" $s1"! ********"
+        echo "******** Already the Newest-Version" $s1" Update" $s4"! ********"
         echo ""
         read -rsp $'Press any key to continue...\n' -n1 key
         rm $backupfolder/srv.txt
@@ -326,30 +354,30 @@ do
 done
 if [ $cHoiceG = '1' ] ; then
 if [ $backupfolder = 'EMPTY' ] ; then
-	backupfolder=$backupfolder2
+        backupfolder=$backupfolder2
 fi
 if [ $serverfolder = 'EMPTY' ] ; then
-	serverfolder=$serverfolder2
+        serverfolder=$serverfolder2
 fi
-	SID=$(ps aux | grep -v 'grep' | grep ts3server | awk '{ print $2 }')
+        SID=$(ps aux | grep -v 'grep' | grep ts3server | awk '{ print $2 }')
 if [ "$SID" ] ;then
         $serverfolder/ts3server_startscript.sh stop
 fi
-	fldrname=$(echo $serverfolder | sed 's:/.*/::')
-	clear
-	cp $backupfolder/$fldrname/* -R $serverfolder/
-	s1=$(cat $serverfolder/CHANGELOG | grep 'Server Release' | head -n 1 | awk '{ print $4 }')
-	echo "******** Server has been Restored to version $s1! ********"
+        fldrname=$(echo $serverfolder | sed 's:/.*/::')
+        clear
+        cp $backupfolder/$fldrname/* -R $serverfolder/
+        s1=$(cat $serverfolder/CHANGELOG | grep 'Server Release' | head -n 1 | awk '{ print $4 }')
+        echo "******** Server has been Restored to version $s1! ********"
         echo ""
-	read -rsp $'Press any key to continue...\n' -n1 key
-	clear
-	unset cHoiceG
-	Main
+        read -rsp $'Press any key to continue...\n' -n1 key
+        clear
+        unset cHoiceG
+ 	Main
 fi
 if [ $cHoiceG = '2' ] ; then
-	clear
-	unset cHoiceG
-	Main
+        clear
+        unset cHoiceG
+        Main
 fi
 }
 
@@ -377,31 +405,32 @@ Main
 }
 
 Main () {
+chcKsZ
 checkK
 menU
 read cHoice
 until [[ $cHoice =~ ^[+]?[1-4]{1}+$ ]]
 do
-	clear
-	menUerror
-	sleep 3
-	clear
-	menU
-	read cHoice
+        clear
+        menUerror
+        sleep 3
+        clear
+        menU
+        read cHoice
 done
 clear
 if [ $cHoice = '1' ] ; then
-	unset cHoice
-	instaLL
+        unset cHoice
+        instaLL
 elif [ $cHoice = '2' ] ; then
-	unset cHoice
-	resToRe
+        unset cHoice
+        resToRe
 elif [ $cHoice = '3' ] ; then
-	unset cHoice
-	backUP
+        unset cHoice
+        backUP
 elif [ $cHoice = '4' ] ; then
-	clear
-	exit
+        clear
+        exit
 fi
 }
 
