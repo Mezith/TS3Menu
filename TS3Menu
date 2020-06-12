@@ -213,22 +213,24 @@ sF=${#serverfolder}
 sF2=${#serverfolder2}
 bF=${#backupfolder}
 bF2=${#backupfolder2}
-if [[ $sF -gt 43 ]] ; then
-        cN=$(($sF+24))
-        unset size
-        size=$cN
-elif [[ $sF2 -gt 43 ]] ; then
-        cN=$(($sF2+24))
-        unset size
-        size=$cN
-elif [[ $bF -gt 43 ]] ; then
-        cN=$(($bF+24))
-        unset size
-        size=$cN
-elif [[ $bF2 -gt 43 ]] ; then
-        cN=$(($bF2+24))
-        unset size
-        size=$cN
+if [[ $sF -gt 43 ]] || [[ $sF2 -gt 43 ]] || [[ $bF -gt 43 ]] || [[ $bF2 -gt 43 ]] ; then
+        if [[ $sF -gt $bF ]] ; then
+                cN=$(($sF+24))
+                unset size
+                size=$cN
+        elif [[ $sF2 -gt $bF2 ]] ; then
+                cN=$(($sF2+24))
+                unset size
+                size=$cN
+        elif [[ $bF -gt $sF ]] ; then
+                cN=$(($bF+24))
+                unset size
+                size=$cN
+        elif [[ $bF2 -gt $sF2 ]] ; then
+                cN=$(($bF2+24))
+                unset size
+                size=$cN
+        fi
 else
         unset size
         size=60
