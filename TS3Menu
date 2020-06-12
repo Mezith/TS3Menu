@@ -109,16 +109,8 @@ midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
 midbraKe 1
 midSectionWrite 'Choose an Option 1,2,3,or 4'
 midSectionWrite 'This Scipt will Auto Backup!'
-if [ $serverfolder = 'EMPTY' ] ; then
-midSectionWrite 'Server Directory '$serverfolder2''
-else
 midSectionWrite 'Server Directory '$serverfolder''
-fi
-if [ $backupfolder = 'EMPTY' ] ; then
-midSectionWrite 'Backup Directory '$backupfolder2''
-else
 midSectionWrite 'Backup Directory '$backupfolder''
-fi
 midbreaK 1
 midSection 1
 optionS "1. Install or Update TeamSpeak3"
@@ -135,16 +127,8 @@ midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
 midbraKe 1
 midSectionWrite 'Choose an Option 1 or 2'
 midSectionWrite 'This Scipt will Auto Backup!'
-if [ $serverfolder = 'EMPTY' ] ; then
-midSectionWrite 'Server Directory '$serverfolder2''
-else
 midSectionWrite 'Server Directory '$serverfolder''
-fi
-if [ $backupfolder = 'EMPTY' ] ; then
-midSectionWrite 'Backup Directory '$backupfolder2''
-else
 midSectionWrite 'Backup Directory '$backupfolder''
-fi
 midbreaK 1
 midSection 1
 optionS 'Please select a File-Type!'
@@ -160,16 +144,8 @@ midSectionWrite "TeamSpeak 3 Install/Update/Backup/Restore Script"
 midbraKe 1
 midSectionWrite 'Choose an Option 1 or 2'
 midSectionWrite 'This Scipt will Auto Backup!'
-if [ $serverfolder = 'EMPTY' ] ; then
-midSectionWrite 'Server Directory '$serverfolder2''
-else
 midSectionWrite 'Server Directory '$serverfolder''
-fi
-if [ $backupfolder = 'EMPTY' ] ; then
-midSectionWrite 'Backup Directory '$backupfolder2''
-else
 midSectionWrite 'Backup Directory '$backupfolder''
-fi
 midbreaK 1
 midSection 1
 optionS 'Are you sure you want to **RESTORE**!?'
@@ -210,24 +186,14 @@ botTom
 
 chcKsZ () {
 sF=${#serverfolder}
-sF2=${#serverfolder2}
 bF=${#backupfolder}
-bF2=${#backupfolder2}
 if [[ $sF -gt 43 ]] || [[ $sF2 -gt 43 ]] || [[ $bF -gt 43 ]] || [[ $bF2 -gt 43 ]] ; then
         if [[ $sF -gt $bF ]] ; then
                 cN=$(($sF+24))
                 unset size
                 size=$cN
-        elif [[ $sF2 -gt $bF2 ]] ; then
-                cN=$(($sF2+24))
-                unset size
-                size=$cN
         elif [[ $bF -gt $sF ]] ; then
                 cN=$(($bF+24))
-                unset size
-                size=$cN
-        elif [[ $bF2 -gt $sF2 ]] ; then
-                cN=$(($bF2+24))
                 unset size
                 size=$cN
         fi
@@ -238,31 +204,31 @@ fi
 }
 
 checkK () {
-if [ "$backupfolder" = 'EMPTY' ] && [ -z $backupfolder2 ] ; then
+if [[ "$backupfolder" = 'EMPTY' ]] ; then
 until [[ $cHoice2 =~ ^\/ ]]
 do
         clear
         menUcheckBF
         read cHoice2
 done
-
-backupfolder2=$cHoice2
+unset backupfolder
+backupfolder=$cHoice2
 sed -i '13s|EMPTY|'$cHoice2'|' "${BASH_SOURCE[0]}"
-unset cHoice2
 fi
-if [ "$serverfolder" = 'EMPTY' ] && [ -z $serverfolder2 ] ; then
+if [[ "$serverfolder" = 'EMPTY' ]] ; then
 until [[ $cHoice3 =~ ^\/ ]]
 do
         clear
         menUcheckSF
         read cHoice3
 done
-serverfolder2=$cHoice3
+unset serverfolder
+serverfolder=$cHoice3
 sed -i '14s|EMPTY|'$cHoice3'|' "${BASH_SOURCE[0]}"
-unset cHoice3
 clear
 fi
 clear
+chcKsZ
 }
 
 update () {
@@ -322,7 +288,7 @@ if [ "$num1" -eq "$num2" ] && [ "$s4" -gt "$s3" ] ; then
         rm -r $backupfolder/$TS3file
         clear
         unset cHoice4
-	 Main
+ 	Main
 elif [ "$num1" -ge "$num2" ];then
         echo "******** Already the Newest-Version" $s1" Update" $s4"! ********"
         echo ""
@@ -355,12 +321,6 @@ do
         read cHoiceG
 done
 if [ $cHoiceG = '1' ] ; then
-if [ $backupfolder = 'EMPTY' ] ; then
-        backupfolder=$backupfolder2
-fi
-if [ $serverfolder = 'EMPTY' ] ; then
-        serverfolder=$serverfolder2
-fi
         SID=$(ps aux | grep -v 'grep' | grep ts3server | awk '{ print $2 }')
 if [ "$SID" ] ;then
         $serverfolder/ts3server_startscript.sh stop
@@ -374,7 +334,7 @@ fi
         read -rsp $'Press any key to continue...\n' -n1 key
         clear
         unset cHoiceG
- 	Main
+        Main
 fi
 if [ $cHoiceG = '2' ] ; then
         clear
