@@ -235,6 +235,7 @@ update () {
 SID=$(ps aux | grep -v 'grep' | grep ts3server | awk '{ print $2 }')
 if [ "$SID" ] ;then
         $serverfolder/ts3server_startscript.sh stop
+        sleep 1
 fi
 cp $serverfolder -R $backupfolder
 cp $backupfolder/$TS3file/* -R $serverfolder/
